@@ -153,8 +153,8 @@ fi
 
 # Install nginx
 echo -n "Would you like to install nginx? (y/n)"
-read installInginx
-if [[ "#installInginx" == "y" ]] || [[ "$installInginx" == "yes" ]]; then
+read installNginx
+if [[ "$installNginx" == "y" ]] || [[ "$installNginx" == "yes" ]]; then
   if [[ ! -f $(which nginx) ]]; then
     echo -e "\n=> install nginx..."
     sudo add-apt-repository ppa:nginx/stable
@@ -164,5 +164,48 @@ if [[ "#installInginx" == "y" ]] || [[ "$installInginx" == "yes" ]]; then
     echo "==> done..."
   else  
     echo "==> Nginx is already installed"
+  fi
+fi
+
+# Install rvm & ruby
+echo -n "Would you like to install ruby with rvm? (y/n)"
+read installRvmRuby
+if [[ "$installRvmRuby" == "y" ]] || [[ "$installRvmRuby" == "yes" ]]; then
+  if [[ ! -f $(which rvm) ]] && [[ ! -f $(which ruby) ]]; then
+    echo -e "\n=> install rvm & ruby..."
+    wget --no-check-certificate -a "$log" -O "$path/src/rvm-installer" https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer
+    chmod +x rvm-installer
+    ./rvm-installer >> "$log" 2>&1
+    echo "Setting up RVM with shells"
+    shellInject="[[ -s \"$HOME/.rvm/scripts/rvm\" ]] && . \"$HOME/.rvm/scripts/rvm\"  # Load RVM into a shell session *as a function*"
+    
+    echo -e "Reloading shell to use RVM\n"
+    if [[ -f "$HOME/.bashrc" ]]; then
+      # Add function to bash
+      echo "$shellInject" >> "$HOME/.bash_profile"
+      echo "$shellInject" >> "$HOME/.bashrc"
+      source "$HOME/.bash_profile"
+      source "$HOME/.bashrc"
+    fi
+    
+    if [[ -f "$HOME/.zshrc" ]]; then
+      # Add function to zsh
+      echo "$shellInject" >> "$HOME/.zshrc"
+      source "$HOME/.zshrc"
+    fi
+    
+    [[ -f ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
+    echo "Installing MRI 1.9.3-p194(This may take a while)"
+    rvm install 1.9.3-p194 >> "$log" 2>&1
+    rvm --default use 1.9.3-p194 >> "$log" 2>&1
+    
+    echo -e "\nUpdating RubyGems"
+    gem update --system --no-ri --no-rdoc >> "$log" 2>&1
+    gem install bundler thin rails --no-ri --no-rdoc >> "$log" 2>&1
+    
+    echo "==> Rvm, Ruby and Gems have been installed"
+    echo "==> done..."
+  else  
+    echo "==> Rvm is already installed"
   fi
 fi
