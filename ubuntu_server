@@ -77,7 +77,7 @@ if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
     sudo aptitude -y install imagemagick libmagick9-dev 
     echo "==> done"
   else
-    echo -e "\n==> ImageMagick is already installed"
+    echo -e "\n==> ImageMagick is already installed";
   fi
 fi
 
