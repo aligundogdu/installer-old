@@ -79,6 +79,7 @@ if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
   else
     echo -e "\n==> ImageMagick is already installed"
   fi
+  true
 fi
 
 
