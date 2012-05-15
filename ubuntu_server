@@ -74,12 +74,11 @@ read installImage
 if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
   if [[ ! -f $(which convert) ]]; then
     echo -e "\nInstalling ImageMagick (this may take a while)"
-    sudo aptitude -y install imagemagick libmagick9-dev 
+    sudo aptitude -y install imagemagick libmagick9-dev > /dev/null 2>&1
     echo "==> done"
   else
     echo -e "\n==> ImageMagick is already installed"
   fi
-  true
 fi
 
 
