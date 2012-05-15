@@ -74,7 +74,7 @@ read installImage
 if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
   if [[ ! -f $(which convert) ]]; then
     echo -e "\nInstalling ImageMagick (this may take a while)"
-    sudo aptitude -y install imagemagick libmagick9-dev >> "$log" 2>&1
+    sudo aptitude -y install imagemagick libmagick9-dev 
     echo "==> done"
   else
     echo "==> ImageMagick is already installed"
@@ -173,9 +173,9 @@ read installRvmRuby
 if [[ "$installRvmRuby" == "y" ]] || [[ "$installRvmRuby" == "yes" ]]; then
   if [[ ! -f $(which rvm) ]] && [[ ! -f $(which ruby) ]]; then
     echo -e "\n=> install rvm & ruby..."
-    wget --no-check-certificate -a "$log" -O "$path/src/rvm-installer" https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer
+    wget --no-check-certificate -a  -O "$path/src/rvm-installer" https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer
     chmod +x rvm-installer
-    ./rvm-installer >> "$log" 2>&1
+    ./rvm-installer 
     echo "Setting up RVM with shells"
     shellInject="[[ -s \"$HOME/.rvm/scripts/rvm\" ]] && . \"$HOME/.rvm/scripts/rvm\"  # Load RVM into a shell session *as a function*"
     
@@ -196,12 +196,12 @@ if [[ "$installRvmRuby" == "y" ]] || [[ "$installRvmRuby" == "yes" ]]; then
     
     [[ -f ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
     echo "Installing MRI 1.9.3-p194(This may take a while)"
-    rvm install 1.9.3-p194 >> "$log" 2>&1
-    rvm --default use 1.9.3-p194 >> "$log" 2>&1
+    rvm install 1.9.3-p194 
+    rvm --default use 1.9.3-p194 
     
     echo -e "\nUpdating RubyGems"
-    gem update --system --no-ri --no-rdoc >> "$log" 2>&1
-    gem install bundler thin rails --no-ri --no-rdoc >> "$log" 2>&1
+    gem update --system --no-ri --no-rdoc >> 
+    gem install bundler thin rails --no-ri --no-rdoc 
     
     echo "==> Rvm, Ruby and Gems have been installed"
     echo "==> done..."
