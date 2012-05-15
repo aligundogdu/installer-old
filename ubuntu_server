@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+#
+# Ubuntu Desktop
+#
+# Author:  Onur Özgür ÖZKAN <onur.ozgur.ozkan@lab2023.com>
+# Licence: MIT
+#
+
+shopt -s nocaseglob
+set -e
+
+
+# Variables
+script_runner=$(whoami)
+
+
+# Exit
+control_c()
+{
+  echo -en "\n\n*** Exiting ***\n\n"
+  exit 1
+}
+
+
+# trap keyboard interrupt (control-c)
+trap control_c SIGINT
+
+
+clear
+
+
+# check distro is linux and ubuntu
+if [[ $MACHTYPE = *linux* ]] ; then
+  distro_sig=$(cat /etc/issue)
+  if [[ "$distro_sig" =~ ubuntu ]] ; then
+    distro="ubuntu"
+  else
+    echo -e "This script install only supports Ubuntu\n"
+    exit 1
+  fi
+else
+  echo -e "This script only supports Ubuntu\n"
+  exit 1
+fi
+
+
+# check if user is root
+if [ $script_runner == "root" ] ; then
+  echo -e "\nThis script must be run as a normal user with sudo privileges\n"
+  exit 1
+fi
+
+
+# Check if the user has sudo privileges.
+sudo -v >/dev/null 2>&1 || { echo $script_runner has no sudo privileges ; exit 1; }
+
+
+## Update system
+echo -e "\n=> updating system and install basic packages"
+sudo apt-get update
+sudo apt-get -y install python-software-properties
+echo "==> done..."
+
+
+## Install build tools
+echo -e "\n=> Installing build tools..."
+sudo aptitude -y install curl build-essential clang bison openssl zlib1g libxslt1.1 libssl-dev libxslt1-dev libxml2 libffi-dev libyaml-dev libxslt-dev autoconf libc6-dev libreadline6-dev zlib1g zlib1g-dev libcurl4-openssl-dev git-core automake libreadline6-dev libxml2-dev libxslt-dev ncurses-dev libtool subversion
+echo "==> done..."
+
+
+# Install imagemagick
+echo -n "Would you like to install ImageMagick? (y/n): "
+read installImage
+if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
+  if [[ ! -f $(which convert) ]]; then
+    echo -e "\nInstalling ImageMagick (this may take a while)"
+    sudo aptitude -y install imagemagick libmagick9-dev >> "$log" 2>&1
+    echo "==> done"
+  else
+    echo "==> ImageMagick is already installed"
+  fi
+fi
+
+
+# Install node.js
+echo -n "Would you like to install nodejs? (y/n): "
+read installNodejs
+if [[ "$installNodejs" == "y" ]] || [[ "$installNodejs" == "yes" ]]; then
+  if [[ ! -f $(which nodejs) ]]; then
+    echo -e "\n=> Installing nodejs..."
+    sudo add-apt-repository ppa:chris-lea/node.js
+    sudo apt-get -y update
+    sudo apt-get -y install nodejs
+    echo "==> done..."  
+  else
+    echo "==> Nodejs is already installed"  
+  fi
+fi
+
+
+## Install sqlite
+echo -n "Would you like to install sqlite? (y/n): "
+read installSqlite
+if [[ "$installSqlite" == "y" ]] || [[ "$installSqlite" == "yes" ]]; then
+  if [[ ! -f $(which sqlite3) ]]; then
+    echo -e "\n=> Installing sqlite3..."
+    sudo aptitude -y install libsqlite3-0 libsqlite3-dev sqlite3
+    echo "==> done..."  
+  else
+    echo "==> Nginx is already installed"  
+  fi
+fi
+
+
+## Install MySQL
+# sudo mysql -u root -p
+# create database blog_production;
+# grant all on blog_production.* to blog@localhost identified by 'secret';
+# exit
+echo -n "Would you like to install mysql? (y/n): "
+read installMysql
+if [[ "$installMysql" == "y" ]] || [[ "$installMysql" == "yes" ]]; then
+  if [[ ! -f $(which mysql) ]]; then
+    echo -e "\n=> Installing mysql..."
+    sudo apt-get -y install mysql-server mysql-client libmysqlclient-dev
+    echo "==> done..."  
+  else
+    echo "==> Mysql is already installed"  
+  fi
+fi
+
+
+## Installing PostgreSQL
+# sudo -u postgres psql
+# \password
+# create user blog with password 'secret';
+# create database blog_production owner blog;
+# \q
+echo -n "Would you like to install postgresql? (y/n): "
+read installPostgresql
+if [[ "$installPostgresql" == "y" ]] || [[ "$installPostgresql" == "yes" ]]; then
+  if [[ ! -f $(which clusterdb) ]]; then
+    echo -e "\n=> Installing postgresql..."
+    sudo add-apt-repository ppa:pitti/postgresql
+    sudo apt-get -y update
+    sudo apt-get -y install postgresql libpq-dev
+    echo "==> done..."
+  else
+    echo "==> Mysql is already installed"  
+  fi
+fi
+
+
+# Install nginx
+echo -n "Would you like to install nginx? (y/n)"
+read installInginx
+if [[ "#installInginx" == "y" ]] || [[ "$installInginx" == "yes" ]]; then
+  if [[ ! -f $(which nginx) ]]; then
+    echo -e "\n=> install nginx..."
+    sudo add-apt-repository ppa:nginx/stable
+    sudo apt-get -y update
+    sudo apt-get -y install nginx
+    sudo service nginx start
+    echo "==> done..."
+  else  
+    echo "==> Nginx is already installed"
+  fi
+fi
