@@ -200,7 +200,7 @@ if [[ "$installRvmRuby" == "y" ]] || [[ "$installRvmRuby" == "yes" ]]; then
     rvm --default use 1.9.3-p194 
     
     echo -e "\nUpdating RubyGems"
-    gem update --system --no-ri --no-rdoc >> 
+    gem update --system --no-ri --no-rdoc
     gem install bundler thin rails --no-ri --no-rdoc 
     
     echo "==> Rvm, Ruby and Gems have been installed"
