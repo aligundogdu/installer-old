@@ -8,6 +8,7 @@
 
     ```bash
     adduser deployer --ingroup sudo
+    su deployer
     ```
     
 2. Then run script with deployer user.
