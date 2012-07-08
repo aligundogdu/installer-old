@@ -107,7 +107,7 @@ if [[ "$installSqlite" == "y" ]] || [[ "$installSqlite" == "yes" ]]; then
     sudo apt-get -y install libsqlite3-0 libsqlite3-dev sqlite3
     echo "==> done..."  
   else
-    echo "==> Nginx is already installed"  
+    echo "==> Sqlite is already installed"  
   fi
 fi
 
