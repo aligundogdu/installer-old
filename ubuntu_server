@@ -64,7 +64,7 @@ echo "==> done..."
 
 ## Install build tools
 echo -e "\n=> Installing build tools..."
-sudo aptitude -y install curl build-essential clang bison openssl zlib1g libxslt1.1 libssl-dev libxslt1-dev libxml2 libffi-dev libyaml-dev libxslt-dev autoconf libc6-dev libreadline6-dev zlib1g zlib1g-dev libcurl4-openssl-dev git-core automake libreadline6-dev libxml2-dev libxslt-dev ncurses-dev libtool subversion
+sudo apt-get -y install curl build-essential clang bison openssl zlib1g libxslt1.1 libssl-dev libxslt1-dev libxml2 libffi-dev libyaml-dev libxslt-dev autoconf libc6-dev libreadline6-dev zlib1g zlib1g-dev libcurl4-openssl-dev git-core automake libreadline6-dev libxml2-dev libxslt-dev ncurses-dev libtool subversion
 echo "==> done..."
 
 
@@ -74,7 +74,7 @@ read installImage
 if [[ "$installImage" == "y" ]] || [[ "$installImage" == "yes" ]]; then
   if [[ ! -f $(which convert) ]]; then
     echo -e "\nInstalling ImageMagick (this may take a while)"
-    sudo aptitude -y install imagemagick libmagick9-dev > /dev/null 2>&1
+    sudo apt-get -y install imagemagick libmagick9-dev > /dev/null 2>&1
     echo "==> done"
   else
     echo -e "\n==> ImageMagick is already installed"
@@ -104,7 +104,7 @@ read installSqlite
 if [[ "$installSqlite" == "y" ]] || [[ "$installSqlite" == "yes" ]]; then
   if [[ ! -f $(which sqlite3) ]]; then
     echo -e "\n=> Installing sqlite3..."
-    sudo aptitude -y install libsqlite3-0 libsqlite3-dev sqlite3
+    sudo apt-get -y install libsqlite3-0 libsqlite3-dev sqlite3
     echo "==> done..."  
   else
     echo "==> Nginx is already installed"  
