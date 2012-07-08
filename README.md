@@ -11,7 +11,9 @@
 2. Then run script with deployer user.
 
     wget --no-check-certificate -a  -O "$path/src/installer" https://raw.github.com/lab2023/installer/master/ubuntu_server
+    
     chmod +x installer
+    
     ./installer 
 
 
