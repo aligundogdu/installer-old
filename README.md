@@ -4,6 +4,13 @@
 
 ## Ubuntu Server
 
+1. Add a deployer user 
+
+    adduser deployer --ingroup sudo
+    
+2. Then run script with deployer user.
+
+
 ## Mint Desktop
 
 # License
