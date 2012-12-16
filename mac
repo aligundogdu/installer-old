@@ -1,0 +1,58 @@
+#!/usr/bin/env zsh
+
+successfully() {
+  $* || (echo "failed" 1>&2 && exit 1)
+}
+
+echo "Checking for SSH key, generating one if it doesn't exist ..."
+  [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
+
+echo "Copying public key to clipboard. Paste it into your Github account ..."
+  [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
+  successfully open https://github.com/account/ssh
+
+echo "Fixing permissions ..."
+  successfully sudo chown -R `whoami` /usr/local
+
+echo "Installing Homebrew, a good OS X package manager ..."
+  successfully ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)
+  successfully brew update
+
+echo "Putting Homebrew location earlier in PATH ..."
+  successfully echo "
+# recommended by brew doctor
+export PATH='/usr/local/bin:$PATH'" >> ~/.zshenv
+  successfully source ~/.zshenv
+
+echo "Installing GNU Compiler Collection and dependencies ..."
+  successfully brew tap homebrew/dupes
+  successfully brew install autoconf automake apple-gcc42
+
+echo "Installing libksba, recommended for Ruby 1.9.3 ..."
+  successfully brew install libksba
+
+echo "Installing Postgres, a good open source relational database ..."
+  successfully brew install postgres --no-python
+  successfully initdb /usr/local/var/postgres -E utf8
+
+echo "Installing Redis, a good key-value database ..."
+  successfully brew install redis
+
+echo "Installing ImageMagick, for cropping and re-sizing images ..."
+  successfully brew install imagemagick
+
+echo "Installing QT, used by Capybara Webkit for headless Javascript integration testing ..."
+  successfully brew install qt
+
+echo "Installing watch, used to execute a program periodically and show the output ..."
+  successfully brew install watch
+
+echo "Installing RVM (Ruby Version Manager) and Ruby 1.9.3-p327, which becomes the default ..."
+  successfully curl -L https://get.rvm.io | bash -s stable --ruby
+  successfully echo "
+# RVM
+[[ -s '/Users/`whoami`/.rvm/scripts/rvm' ]] && source '/Users/`whoami`/.rvm/scripts/rvm'" >> ~/.zshenv
+  successfully source ~/.rvm/scripts/rvm
+
+echo "Installing critical Ruby gems for Rails development ..."
+  successfully gem install bundler rails pg --no-rdoc --no-ri
