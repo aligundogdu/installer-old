@@ -18,12 +18,6 @@ echo "Installing Homebrew, a good OS X package manager ..."
   successfully ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)
   successfully brew update
 
-echo "Putting Homebrew location earlier in PATH ..."
-  successfully echo "
-# recommended by brew doctor
-export PATH='/usr/local/bin:$PATH'" >> ~/.zshenv
-  successfully source ~/.zshenv
-
 echo "Installing GNU Compiler Collection and dependencies ..."
   successfully brew tap homebrew/dupes
   successfully brew install autoconf automake apple-gcc42
