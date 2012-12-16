@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 successfully() {
   $* || (echo "failed" 1>&2 && exit 1)
