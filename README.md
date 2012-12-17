@@ -1,25 +1,6 @@
 # Installer
 
-# Install
-
-## Ubuntu Server
-
-1. Add a deployer user 
-
-    ```bash
-    adduser deployer --ingroup sudo
-    su deployer
-    ```
-    
-2. Then run script with deployer user.
-
-    ```bash
-    wget --no-check-certificate -a  -O "$path/src/installer" https://raw.github.com/lab2023/installer/master/ubuntu_server
-    chmod +x installer
-    ./installer 
-    ```
-
-## Mint Desktop
+DON'T USE THIS SCRIPT IN PRODUCTION!
 
 # License
 
